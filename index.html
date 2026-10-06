@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse Music</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+    }
+
+    .app {
+      max-width: 480px;
+      min-height: 100vh;
+      margin: auto;
+      padding-bottom: 70px;
+      background-color: #1b1b1b;
+    }
+
+    .page {
+      display: none;
+      padding: 20px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    h1, h2 {
+      color: #1ed760;
+    }
+
+    button, input {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #1ed760;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    input {
+      width: 100%;
+      margin: 5px 0;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    .box, .song {
+      margin: 12px 0;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #292929;
+    }
+
+    .song {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .music-icon {
+      padding: 12px;
+      border-radius: 8px;
+      background-color: #1ed760;
+      color: black;
+      font-size: 22px;
+    }
+
+    .song-details {
+      flex: 1;
+    }
+
+    .song-details h3, .song-details p {
+      margin: 3px 0;
+    }
+
+    .song-details p, .muted {
+      color: #bdbdbd;
+    }
+
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      background-color: #252525;
+    }
+
+    .nav-bar button {
+      padding: 5px;
+      background: none;
+      color: #cccccc;
+    }
+
+    .profile {
+      text-align: center;
+    }
+
+    .avatar {
+      width: 85px;
+      height: 85px;
+      margin: auto;
+      display: grid;
+      place-items: center;
+      border: 3px solid #1ed760;
+      border-radius: 50%;
+      font-size: 32px;
+    }
+
+    #editProfile {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <section class="page active" id="home">
+      <h1>Pulse</h1>
+      <p>Hey, music lover.</p>
+
+      <div class="box">
+        <h2>Music for every moment</h2>
+        <button onclick="openPage('search')">Search music</button>
+      </div>
+
+      <h2>Popular songs</h2>
+
+      <div class="song">
+        <div class="music-icon">♫</div>
+        <div class="song-details">
+          <h3>MIDNIGHT VIBES</h3>
+          <p>EMOTIONAL RIDE</p>
+        </div>
+        <button onclick="chooseSong('MIDNIGHT VIBES', 'EMOTIONAL RIDE')">
+          Play
+        </button>
+      </div>
+
+      <div class="song">
+        <div class="music-icon">♫</div>
+        <div class="song-details">
+          <h3>SHE IS NOT YOURS</h3>
+          <p>HE NEVER FORGETS</p>
+        </div>
+        <button onclick="chooseSong('SHE IS NOT YOURS', 'HE NEVER FORGETS')">
+          Play
+        </button>
+      </div>
+    </section>
+
+    <section class="page" id="search">
+      <h1>Search music</h1>
+      <input id="searchText" placeholder="Enter a song or artist">
+      <button onclick="searchMusic()">Search</button>
+      <p id="searchResult"></p>
+    </section>
+
+    <section class="page" id="library">
+      <h1>Your library</h1>
+
+      <div class="box">
+        <h2>Chill Vibes</h2>
+        <p class="muted">6 songs - Relaxing music</p>
+      </div>
+
+      <div class="box">
+        <h2>Study Focus</h2>
+        <p class="muted">8 songs - Focus music</p>
+      </div>
+    </section>
+
+    <section class="page" id="player">
+      <button onclick="openPage('home')">Back</button>
+      <h1>Now playing</h1>
+
+      <div class="box" style="text-align: center; font-size: 80px;">♫</div>
+
+      <h2 id="nowPlaying">No song selected</h2>
+      <p id="nowArtist" class="muted">Choose a song from Home.</p>
+
+      <button id="playButton" onclick="changePlayButton()">Play</button>
+    </section>
+
+    <section class="page" id="profile">
+      <div class="profile">
+        <div class="avatar" id="avatar">P</div>
+        <h2 id="name">Music Lover</h2>
+        <p id="username" class="muted">@pulse_user</p>
+        <button onclick="showEditForm()">Edit profile</button>
+      </div>
+
+      <div class="box">
+        <p><b>City:</b> <span id="city">Your City</span></p>
+        <p><b>Favourite genre:</b> <span id="genre">Romantic</span></p>
+        <p><b>Bio:</b> <span id="bio">Music is my favourite escape.</span></p>
+      </div>
+
+      <div class="box" id="editProfile">
+        <h2>Edit profile</h2>
+
+        <input id="newName" placeholder="Your name">
+        <input id="newUsername" placeholder="Username">
+        <input id="newCity" placeholder="City">
+        <input id="newGenre" placeholder="Favourite genre">
+        <input id="newBio" placeholder="Short bio">
+
+        <button onclick="saveChanges()">Save</button>
+        <p id="profileResult"></p>
+      </div>
+    </section>
+
+    <nav class="nav-bar">
+      <button onclick="openPage('home')">Home</button>
+      <button onclick="openPage('search')">Search</button>
+      <button onclick="openPage('library')">Library</button>
+      <button onclick="openPage('profile')">Profile</button>
+    </nav>
+
+  </div>
+
+  <script>
+    let playing = false;
+
+    function openPage(pageName) {
+      let pages = document.querySelectorAll(".page");
+
+      for (let i = 0; i < pages.length; i++) {
+        pages[i].classList.remove("active");
+      }
+
+      document.getElementById(pageName).classList.add("active");
+    }
+
+    function chooseSong(songName, artistName) {
+      document.getElementById("nowPlaying").textContent = songName;
+      document.getElementById("nowArtist").textContent = artistName;
+      document.getElementById("playButton").textContent = "Play";
+
+      playing = false;
+      openPage("player");
+    }
+
+    function changePlayButton() {
+      playing = !playing;
+
+      if (playing) {
+        document.getElementById("playButton").textContent = "Pause";
+      } else {
+        document.getElementById("playButton").textContent = "Play";
+      }
+    }
+
+    function searchMusic() {
+      let text = document.getElementById("searchText").value.trim();
+
+      if (text === "") {
+        document.getElementById("searchResult").textContent =
+          "Please enter a song or artist.";
+      } else {
+        document.getElementById("searchResult").textContent =
+          "Showing results for: " + text;
+      }
+    }
+
+    function showEditForm() {
+      document.getElementById("editProfile").style.display = "block";
+    }
+
+    function saveChanges() {
+      let name = document.getElementById("newName").value.trim();
+      let username = document.getElementById("newUsername").value.trim();
+      let city = document.getElementById("newCity").value;
+      let genre = document.getElementById("newGenre").value;
+      let bio = document.getElementById("newBio").value;
+
+      if (name === "") {
+        document.getElementById("profileResult").textContent =
+          "Please enter your name.";
+        return;
+      }
+
+      document.getElementById("name").textContent = name;
+      document.getElementById("avatar").textContent = name[0].toUpperCase();
+
+      if (username !== "") {
+        document.getElementById("username").textContent = "@" + username;
+      }
+
+      if (city !== "") {
+        document.getElementById("city").textContent = city;
+      }
+
+      if (genre !== "") {
+        document.getElementById("genre").textContent = genre;
+      }
+
+      if (bio !== "") {
+        document.getElementById("bio").textContent = bio;
+      }
+
+      document.getElementById("profileResult").textContent =
+        "Profile updated.";
+    }
+  </script>
+</body>
+</html>
